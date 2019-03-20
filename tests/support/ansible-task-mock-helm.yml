@@ -1,0 +1,6 @@
+
+- name: Overwrite Helm with the mock script
+  copy:
+    src: /etc/ansible/roles/rolename/tests/support/helm.mock
+    dest: "{{ helm_local_path }}"
+    force: yes

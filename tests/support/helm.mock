@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# Mock Helm binary
+# If certain commands were called exit with successful code
+
+arguments=$(echo "${@}")
+
+upgrade_prometheus_flags='upgrade --version 8.8.0 --namespace prometheus --values /etc/ansible/roles/rolename/tests/helm-config/prometheus/values.yml prometheus stable/prometheus'
+install_logstash_flags='install logstash --version 8.8.0 --namespace logstash --values /etc/ansible/roles/rolename/tests/helm-config/logstash/values.yml --name logstash'
+
+if [ "${arguments}" = 'init --upgrade' ]; then
+  exit 0
+elif [ "${arguments}" = 'repo update' ]; then
+  exit 0
+elif [ "${arguments}" = 'list --all --output yaml' ]; then
+  # helm list --all --output yaml
+  cat << EOF
+Next: ""
+Releases:
+- AppVersion: 2.7.1
+  Chart: prometheus-8.8.0
+  Name: prometheus
+  Namespace: prometheus
+  Revision: 1
+  Status: DEPLOYED
+  Updated: Wed Mar 03 06:36:33 2018
+EOF
+elif [ "${arguments}" = "${upgrade_prometheus_flags}" ]; then
+  exit 0
+elif [ "${arguments}" = "${install_logstash_flags}" ]; then
+  exit 0
+else
+  echo "${arguments}"
+  exit 1
+fi
