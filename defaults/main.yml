@@ -1,0 +1,33 @@
+---
+
+###
+### Sane defaults
+###
+
+helm_version: 2.12.3
+
+# Don't use os.path.join
+# Resource: https://github.com/pallets/jinja/issues/367#issuecomment-55359971
+helm_local_directory_path: '/tmp/helm'
+helm_local_path: "{{ helm_local_directory_path }}/helm-{{ helm_version }}"
+helm_checksum_local_path: "{{ helm_local_directory_path }}/helm-{{ helm_version }}.sha256"
+
+# Directory with custom values for helm charts
+# Example:
+#   $ tree ./helm-config
+#   ./helm-config
+#   ├── prometheus
+#   │   └── values.yml
+#   └── ambassador
+#       └── values.yml
+helm_configuration_files: "{{ playbook_dir }}/helm-config"
+
+# List of Helm charts which will be installed/updated
+helm_charts: []
+# Example
+#   helm_charts:
+#     - release: monitoring-prometheus
+#       chart: stable/prometheus
+#       chart_version: 8.8.0
+#       values_file_path: prometheus/values.yml
+#       namespace: monitoring-prometheus
