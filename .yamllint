@@ -4,6 +4,7 @@ extends: default
 
 ignore: |
   /.travis.yml
+  /tests
 
 rules:
   line-length:
