@@ -1,4 +1,0 @@
----
-
-helm_local_path: "{{ helm_local_directory_path }}/helm-{{ helm_version }}"
-helm_checksum_local_path: "{{ helm_local_directory_path }}/helm-{{ helm_version }}.sha256"

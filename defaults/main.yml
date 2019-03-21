@@ -6,12 +6,6 @@
 
 helm_version: 2.12.3
 
-# Don't use os.path.join
-# Resource: https://github.com/pallets/jinja/issues/367#issuecomment-55359971
-helm_local_directory_path: '/tmp/helm'
-helm_local_path: "{{ helm_local_directory_path }}/helm-{{ helm_version }}"
-helm_checksum_local_path: "{{ helm_local_directory_path }}/helm-{{ helm_version }}.sha256"
-
 # Directory with custom values for helm charts
 # Example:
 #   $ tree ./helm-config
