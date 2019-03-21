@@ -4,11 +4,6 @@
 ### Main entrypoint
 ###
 
-- include: install-helm.yml
-  tags:
-    # Leave this tag at the bottom
-    # Tests rely on its position
-    - helm-install
 
 - name: Update tiller
   command: "{{ helm_local_path }} init --upgrade"
