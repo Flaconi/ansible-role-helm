@@ -12,10 +12,10 @@
 - name: Fail if Helm command does NOT exist
   fail:
     msg: "Helm command doesn NOT exist. Please install Helm v{{ helm_version }}"
-  when: helm_exist.rc == 1
+  when: helm_exist.rc != 0
 
 - name: Get Helm verson
-  command: "{{ helm_local_path }} version --client --template '{% raw %}{{ .Client.SemVer }}{% endraw %}'"
+  command: "helm version --client --template '{{ '{%' }} raw %}{{ '{{' }} .Client.SemVer }}{{ '{%' }} endraw %}'"
   register: helm_local_version
   ignore_errors: yes
 
@@ -25,13 +25,13 @@
   when: "'v{{ helm_version }}' != '{{ helm_local_version.stdout }}'"
 
 - name: Update tiller
-  command: "{{ helm_local_path }} init --upgrade"
+  command: "helm init --upgrade"
 
 - name: Get the latest list of charts
-  command: "{{ helm_local_path }} repo update"
+  command: "helm repo update"
 
 - name: Get all Helm releases
-  command: "{{ helm_local_path }} list --all --output yaml"
+  command: "helm list --all --output yaml"
   register: get_releases_command
 
 - name: Parse all Helm releases
@@ -45,7 +45,7 @@
 
 - name: Install chart (if release does NOT exist yet)
   command: |
-    {{ helm_local_path }} install {{ item.release }}
+    helm install {{ item.release }}
       --version {{ item.chart_version }}
       --namespace {{ item.namespace }}
       --values {{ helm_configuration_files }}/{{ item.values_file_path }}
@@ -55,7 +55,7 @@
 
 - name: Update chart (if release exist already)
   command: |
-    {{ helm_local_path }} upgrade
+    helm upgrade
       --version {{ item.chart_version }}
       --namespace {{ item.namespace }}
       --values {{ helm_configuration_files }}/{{ item.values_file_path }}
