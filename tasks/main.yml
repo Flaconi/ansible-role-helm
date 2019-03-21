@@ -10,12 +10,6 @@
     # Tests rely on its position
     - helm-install
 
-- name: Overwrite Helm with the mock script
-  copy:
-    src: /etc/ansible/roles/rolename/tests/support/helm.mock
-    dest: "{{ helm_local_path }}"
-    force: yes
-
 - name: Update tiller
   command: "{{ helm_local_path }} init --upgrade"
 
