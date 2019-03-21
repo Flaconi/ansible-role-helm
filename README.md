@@ -20,6 +20,7 @@ Additional variables that can be used (either as `host_vars`/`group_vars` or via
 | `helm_version`               | Helm version to download |
 | `helm_local_directory_path`  | Directory into which to download Helm |
 | `helm_configuration_files`   | Directory where chart configuration files is stored |
+| `helm_charts`                | List of items which represent the release. <br />Release items have the following fields: `release`,`chart`,`chart_version`,`values_file_path`,`namespace` |
 
 ## Example Usage
 
