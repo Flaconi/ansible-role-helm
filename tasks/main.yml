@@ -4,6 +4,25 @@
 ### Main entrypoint
 ###
 
+- name: Check if Helm binary exists
+  shell: command -v helm >/dev/null 2>&1
+  register: helm_exist
+  ignore_errors: yes
+
+- name: Fail if Helm command does NOT exist
+  fail:
+    msg: "Helm command doesn NOT exist. Please install Helm v{{ helm_version }}"
+  when: helm_exist.rc == 1
+
+- name: Get Helm verson
+  command: "{{ helm_local_path }} version --client --template '{% raw %}{{ .Client.SemVer }}{% endraw %}'"
+  register: helm_local_version
+  ignore_errors: yes
+
+- name: Fail if Helm version does NOT match
+  fail:
+    msg: "Local Helm version does NOT match the requirements. Please install Helm v{{ helm_version }}"
+  when: "'v{{ helm_version }}' != '{{ helm_local_version.stdout }}'"
 
 - name: Update tiller
   command: "{{ helm_local_path }} init --upgrade"
