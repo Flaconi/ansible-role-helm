@@ -8,7 +8,10 @@ arguments=$(echo "${@}")
 upgrade_prometheus_flags='upgrade --version 8.8.0 --namespace prometheus --values /etc/ansible/roles/rolename/tests/helm-config/prometheus/values.yml prometheus stable/prometheus'
 install_logstash_flags='install logstash --version 8.8.0 --namespace logstash --values /etc/ansible/roles/rolename/tests/helm-config/logstash/values.yml --name logstash'
 
-if [ "${arguments}" = 'init --upgrade' ]; then
+if [ "${arguments}" = "version --client --template '{% raw %}{{ .Client.SemVer }}{% endraw %}'" ] || \
+  [ "${arguments}" = "version --client --template {% raw %}{{ .Client.SemVer }}{% endraw %}" ]; then
+  echo 'v2.12.3'
+elif [ "${arguments}" = 'init --upgrade' ]; then
   exit 0
 elif [ "${arguments}" = 'repo update' ]; then
   exit 0

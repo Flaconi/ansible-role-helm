@@ -4,50 +4,57 @@ set -e
 set -u
 set -o pipefail
 
+script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+test_directory="${script_directory}/.."
 helm_version='2.12.3'
 
 
-# --- Test if Helm was successfully installed ---
-
+# --- Test if role fails when Helm command does NOT exist ---
+set +e
 # Test if helm was installed successfully
-ansible-playbook --tags=helm-install --extra-vars=ansible_system=Linux test-defaults.yml
+ansible-playbook "${test_directory}/test-defaults.yml"
 
-# Make sure helm was installed by checking its version
-"/tmp/helm/helm-${helm_version}" version --client
+exit_code=$?
+if [ "${exit_code}" = '0' ]; then
+  echo "Role should fail since helm command does NOT exist"
+  exit 1
+fi
+set -e
+# ---
 
+
+# --- Test if role fails when specific Helm version does NOT exist ---
+# Mock Helm
+echo -e "#!/usr/bin/env bash\necho '2.12.3-wong-version'" > /usr/local/bin/helm
+chmod u+x /usr/local/bin/helm
+
+set +e
+# Test if helm was installed successfully
+ansible-playbook "${test_directory}/test-defaults.yml"
+
+exit_code=$?
+if [ "${exit_code}" = '0' ]; then
+  echo "Role should fail since helm command does NOT exist"
+  exit 1
+fi
+set -e
 # ---
 
 
 # --- Test if role works if no charts were defined ---
-
-# Create a backup of current main.yml
-cat /etc/ansible/roles/rolename/tasks/main.yml > /tmp/backup-main.yml
-# Squeeze in the logic where helm gets replaced by a mocked script
-sed -i '/- helm-install/r /etc/ansible/roles/rolename/tests/support/ansible-task-mock-helm.yml' \
-  /etc/ansible/roles/rolename/tasks/main.yml
+# Mock Helm
+cp "${script_directory}/helm.mock" /usr/local/bin/helm
 
 # Run the role
-ansible-playbook --extra-vars=ansible_system=Linux test-defaults.yml
-
-# Revert the file
-cat /tmp/backup-main.yml > /etc/ansible/roles/rolename/tasks/main.yml
-
-# Cleanup mocked helm script
-rm -rf /tmp/helm/
+ansible-playbook "${test_directory}/test-defaults.yml"
 # ---
 
 
 # --- Test if role works with charts ---
-
-# Create a backup of current main.yml
-cat /etc/ansible/roles/rolename/tasks/main.yml > /tmp/backup-main.yml
-# Squeeze in the logic where helm gets replaced by a mocked script
-sed -i '/- helm-install/r /etc/ansible/roles/rolename/tests/support/ansible-task-mock-helm.yml' \
-  /etc/ansible/roles/rolename/tasks/main.yml
-
 # Run the role
-ansible-playbook --extra-vars=ansible_system=Linux test-with-charts.yml
-
-# Revert the file
-cat /tmp/backup-main.yml > /etc/ansible/roles/rolename/tasks/main.yml
+ansible-playbook "${test_directory}/test-with-charts.yml"
 # ---
+
+
+# Clean up
+rm /usr/local/bin/helm
