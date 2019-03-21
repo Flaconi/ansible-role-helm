@@ -25,7 +25,7 @@ Additional variables that can be used (either as `host_vars`/`group_vars` or via
 
 ```yml
 ---
-- name: Running the defaults test case
+- name: Install Helm locally and roll out charts
   hosts: localhost
   roles:
     - role: rolename
