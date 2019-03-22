@@ -7,6 +7,7 @@
 - name: Check if Helm binary exists
   shell: command -v helm >/dev/null 2>&1
   register: _helm_exist
+  changed_when: False
   ignore_errors: True
 
 - name: Fail if Helm command does NOT exist
@@ -17,6 +18,7 @@
 - name: Get Helm version
   command: "helm version --client --template '{{ '{{' }} .Client.SemVer {{ '}}' }}'"
   register: _helm_local_version
+  changed_when: False
   ignore_errors: True
 
 - name: Fail if Helm version does NOT match
