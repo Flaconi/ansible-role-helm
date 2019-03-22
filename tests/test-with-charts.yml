@@ -1,0 +1,18 @@
+---
+- name: Running the defaults test case
+  hosts: localhost
+  roles:
+    - role: rolename
+      vars:
+        helm_charts:
+          - release: prometheus
+            chart: stable/prometheus
+            chart_version: 8.8.0
+            values_file_path: prometheus/values.yml
+            namespace: prometheus
+
+          - release: logstash
+            chart: stable/logstash
+            chart_version: 8.8.0
+            values_file_path: logstash/values.yml
+            namespace: logstash
