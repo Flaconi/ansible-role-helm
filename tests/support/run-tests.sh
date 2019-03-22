@@ -6,7 +6,6 @@ set -o pipefail
 
 script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 test_directory="${script_directory}/.."
-helm_version='2.12.3'
 
 
 # --- Test if role fails when Helm command does NOT exist ---
@@ -25,7 +24,8 @@ set -e
 
 # --- Test if role fails when specific Helm version does NOT exist ---
 # Mock Helm
-echo -e "#!/usr/bin/env bash\necho '2.12.3-wong-version'" > /usr/local/bin/helm
+echo -e "#!/usr/bin/env bash" > /usr/local/bin/helm
+echo -e "echo '2.12.3-wrong-version'" >> /usr/local/bin/helm
 chmod u+x /usr/local/bin/helm
 
 set +e
@@ -57,4 +57,4 @@ ansible-playbook "${test_directory}/test-with-charts.yml"
 
 
 # Clean up
-rm /usr/local/bin/helm
+rm -f /usr/local/bin/helm || true

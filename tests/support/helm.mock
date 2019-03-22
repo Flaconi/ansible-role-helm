@@ -3,13 +3,13 @@
 # Mock Helm binary
 # If certain commands were called exit with successful code
 
-arguments=$(echo "${@}")
+arguments=$(printf "%s" "${*}")
 
 upgrade_prometheus_flags='upgrade --version 8.8.0 --namespace prometheus --values /etc/ansible/roles/rolename/tests/helm-config/prometheus/values.yml prometheus stable/prometheus'
 install_logstash_flags='install logstash --version 8.8.0 --namespace logstash --values /etc/ansible/roles/rolename/tests/helm-config/logstash/values.yml --name logstash'
 
-if [ "${arguments}" = "version --client --template '{% raw %}{{ .Client.SemVer }}{% endraw %}'" ] || \
-  [ "${arguments}" = "version --client --template {% raw %}{{ .Client.SemVer }}{% endraw %}" ]; then
+if [ "${arguments}" = "version --client --template '{{ .Client.SemVer }}'" ] || \
+  [ "${arguments}" = "version --client --template {{ .Client.SemVer }}" ]; then
   echo 'v2.12.3'
 elif [ "${arguments}" = 'init --upgrade' ]; then
   exit 0

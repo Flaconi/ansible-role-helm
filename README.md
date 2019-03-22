@@ -4,7 +4,6 @@ This role handles the creation and updates of Helm charts.
 
 [![Build Status](https://travis-ci.com/Flaconi/ansible-role-helm.svg?branch=master)](https://travis-ci.com/Flaconi/ansible-role-helm)
 [![Version](https://img.shields.io/github/tag/Flaconi/ansible-role-helm.svg)](https://github.com/Flaconi/ansible-role-helm/tags)
-[![Ansible Galaxy](https://img.shields.io/ansible/role/d/25936.svg)](https://galaxy.ansible.com/Flaconi/aws-vpc-cgw/)
 
 ## Requirements
 
@@ -72,5 +71,5 @@ make lint
 make test
 
 # Run integration tests with custom Ansible version
-make test ANSIBLE_VERSION=2.4
+make test ANSIBLE_VERSION=2.5
 ```
