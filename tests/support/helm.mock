@@ -6,7 +6,7 @@
 arguments=$(printf "%s" "${*}")
 
 upgrade_prometheus_flags='upgrade --version 8.8.0 --namespace prometheus --values /etc/ansible/roles/rolename/tests/helm-config/prometheus/values.yml prometheus stable/prometheus'
-install_logstash_flags='install logstash --version 8.8.0 --namespace logstash --values /etc/ansible/roles/rolename/tests/helm-config/logstash/values.yml --name logstash'
+install_logstash_flags='install stable/logstash --version 8.8.0 --namespace logstash --values /etc/ansible/roles/rolename/tests/helm-config/logstash/values.yml --name logstash'
 
 if [ "${arguments}" = "version --client --template '{{ .Client.SemVer }}'" ] || \
   [ "${arguments}" = "version --client --template {{ .Client.SemVer }}" ]; then
