@@ -9,6 +9,7 @@
   register: _helm_exist
   changed_when: False
   ignore_errors: True
+  check_mode: False
 
 - name: Fail if Helm command does NOT exist
   fail:
@@ -20,6 +21,7 @@
   register: _helm_local_version
   changed_when: False
   ignore_errors: True
+  check_mode: False
 
 - name: Fail if Helm version does NOT match
   fail:
@@ -35,6 +37,7 @@
 - name: Get all Helm releases
   command: "helm list --all --output yaml"
   register: _get_releases_command
+  check_mode: False
 
 - name: Parse all Helm releases
   set_fact:
