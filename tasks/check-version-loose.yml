@@ -9,9 +9,14 @@
 
 - name: Set desired Helm version
   set_fact:
-    _helm_desired_version: "{{ helm_version | regex_replace('^(?P<major>[0-9]+)\\.(?P<minor>[0-9]+)\\.(?P<patch>[0-9]+)', 'v\\g<major>.\\g<minor>') }}"
+    _helm_desired_version: "{{
+      helm_version |
+      regex_replace('^(?P<major>[0-9]+)\\.(?P<minor>[0-9]+)\\.(?P<patch>[0-9]+)', 'v\\g<major>.\\g<minor>')
+    }}"
 
 - name: Fail if Helm version does NOT match (major and minor)
   fail:
-    msg: "Local Helm version does NOT match the requirements ({{ _helm_local_version.stdout }}). Please install Helm v{{ _helm_desired_version }}.x"
+    msg:
+      Local Helm version does NOT match the requirements ({{ _helm_local_version.stdout }}).
+      Please install Helm v{{ _helm_desired_version }}.x
   when: _helm_desired_version  != _helm_local_version.stdout
