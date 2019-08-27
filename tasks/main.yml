@@ -1,9 +1,8 @@
 ---
 
 ###
-### Main entrypoint
+### Ensure Helm is installed
 ###
-
 - name: Check if Helm binary exists
   shell: command -v helm >/dev/null 2>&1
   register: _helm_exist
@@ -16,54 +15,20 @@
     msg: "Helm command doesn NOT exist. Please install Helm v{{ helm_version }}"
   when: _helm_exist.rc != 0
 
-- name: Get Helm version
-  command: "helm version --client --template '{{ '{{' }} .Client.SemVer {{ '}}' }}'"
-  register: _helm_local_version
-  changed_when: False
-  ignore_errors: True
-  check_mode: False
 
-- name: Fail if Helm version does NOT match
-  fail:
-    msg: "Local Helm version does NOT match the requirements. Please install Helm v{{ helm_version }}"
-  when: ('v' + helm_version) != _helm_local_version.stdout
+###
+### Ensure local Helm version is correct
+###
+- include_tasks: check-version-strict.yml
+  when:
+    - helm_version_strict == True
 
-- name: Update tiller
-  command: "helm init --upgrade"
+- include_tasks: check-version-loose.yml
+  when:
+    - helm_version_strict == False
 
-- name: Get the latest list of charts
-  command: "helm repo update"
 
-- name: Get all Helm releases
-  command: "helm list --all --output yaml"
-  register: _get_releases_command
-  check_mode: False
-
-- name: Parse all Helm releases
-  set_fact:
-    # Resource: https://stackoverflow.com/a/39852380
-    helm_raw_releases: "{{ _get_releases_command.stdout | from_yaml }}"
-
-- name: Get array of release names
-  set_fact:
-    helm_release_names: "{{ helm_raw_releases.Releases | map(attribute='Name') | list }}"
-
-- name: Install chart (if release does NOT exist yet)
-  command: |
-    helm install {{ item.chart }}
-      --version {{ item.chart_version }}
-      --namespace {{ item.namespace }}
-      --values {{ helm_configuration_files }}/{{ item.values_file_path }}
-      --name {{ item.release }}
-  with_items: "{{ helm_charts }}"
-  when: item.release not in helm_release_names
-
-- name: Update chart (if release exist already)
-  command: |
-    helm upgrade
-      --version {{ item.chart_version }}
-      --namespace {{ item.namespace }}
-      --values {{ helm_configuration_files }}/{{ item.values_file_path }}
-      {{ item.release }} {{ item.chart }}
-  with_items: "{{ helm_charts }}"
-  when: item.release in helm_release_names
+###
+### Run
+###
+- include_tasks: run.yml
