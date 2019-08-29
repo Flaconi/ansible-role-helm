@@ -19,7 +19,12 @@
 
 - name: Get array of release names
   set_fact:
-    helm_release_names: "{% if 'Releases' in helm_raw_releases %}{{ helm_raw_releases.Releases | map(attribute='Name') | list }}{% else %}{{ [] }}{% endif %}"
+    helm_release_names: >-
+      {%- if 'Releases' in helm_raw_releases -%}
+      {{ helm_raw_releases.Releases | map(attribute='Name') | list }}
+      {%- else -%}
+      {{ [] }}
+      {%- endif %}"
 
 - name: Install chart (if release does NOT exist yet)
   command: |
