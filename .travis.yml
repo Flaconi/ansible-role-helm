@@ -35,7 +35,8 @@ jobs:
       env:
         - ANSIBLE_VERSION=2.5
       script:
-        - make test ANSIBLE_VERSION=${ANSIBLE_VERSION}
+        - make test ANSIBLE_VERSION=${ANSIBLE_VERSION} HELM_VERSION=2.12.4 ANSIBLE_ARGS="'-e helm_version_strict=yes -e helm_version=2.12.4'"
+        - make test ANSIBLE_VERSION=${ANSIBLE_VERSION} HELM_VERSION=2.12.5 ANSIBLE_ARGS="'-e helm_version_strict=no  -e helm_version=2.12.4'"
 
     # Job 1: Ansible latest
     - stage: test ansible
@@ -45,4 +46,5 @@ jobs:
       env:
         - ANSIBLE_VERSION=latest
       script:
-        - make test ANSIBLE_VERSION=${ANSIBLE_VERSION}
+        - make test ANSIBLE_VERSION=${ANSIBLE_VERSION} HELM_VERSION=2.12.4 ANSIBLE_ARGS="'-e helm_version_strict=yes -e helm_version=2.12.4'"
+        - make test ANSIBLE_VERSION=${ANSIBLE_VERSION} HELM_VERSION=2.12.5 ANSIBLE_ARGS="'-e helm_version_strict=no  -e helm_version=2.12.4'"

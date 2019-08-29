@@ -3,6 +3,15 @@
 # Mock Helm binary
 # If certain commands were called exit with successful code
 
+
+if env | grep -q '^HELM_VERSION=' 2>/dev/null; then
+	HELM_VERSION="$( env | grep '^HELM_VERSION=' | sed 's/^HELM_VERSION=//g' )"
+else
+	HELM_VERSION="2.12.3"
+fi
+
+
+
 arguments=$(printf "%s" "${*}")
 
 upgrade_prometheus_flags='upgrade --version 8.8.0 --namespace prometheus --values /etc/ansible/roles/rolename/tests/helm-config/prometheus/values.yml prometheus stable/prometheus'
@@ -10,7 +19,7 @@ install_logstash_flags='install stable/logstash --version 8.8.0 --namespace logs
 
 if [ "${arguments}" = "version --client --template '{{ .Client.SemVer }}'" ] || \
   [ "${arguments}" = "version --client --template {{ .Client.SemVer }}" ]; then
-  echo 'v2.12.3'
+  echo "v${HELM_VERSION}"
 elif [ "${arguments}" = 'init --upgrade' ]; then
   exit 0
 elif [ "${arguments}" = 'repo update' ]; then
