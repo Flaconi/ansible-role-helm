@@ -10,6 +10,6 @@
 - name: Fail if Helm version does NOT match exactly (major, minor and patch)
   fail:
     msg:
-      Local Helm version does NOT match the requirements ({{ _helm_local_version.stdout }}).
+      Local Helm version ({{ _helm_local_version.stdout }}) does NOT match the requirements.
       Please install Helm v{{ helm_version }}
   when: ('v' + helm_version) != _helm_local_version.stdout
