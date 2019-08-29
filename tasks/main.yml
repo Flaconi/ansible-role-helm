@@ -21,11 +21,11 @@
 ###
 - include_tasks: check-version-strict.yml
   when:
-    - helm_version_strict == True
+    - helm_version_strict|bool == True
 
 - include_tasks: check-version-loose.yml
   when:
-    - helm_version_strict == False
+    - helm_version_strict|bool == False
 
 
 ###
