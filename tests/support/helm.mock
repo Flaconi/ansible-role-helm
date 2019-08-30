@@ -4,12 +4,7 @@
 # If certain commands were called exit with successful code
 
 
-if env | grep -q '^HELM_VERSION=' 2>/dev/null; then
-	HELM_VERSION="$( env | grep '^HELM_VERSION=' | sed 's/^HELM_VERSION=//g' )"
-else
-	HELM_VERSION="2.12.3"
-fi
-
+HELM_VERSION="${HELM_VERSION:-2.12.3}"
 
 
 arguments=$(printf "%s" "${*}")

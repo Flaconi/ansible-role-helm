@@ -8,20 +8,14 @@ script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 test_directory="${script_directory}/.."
 
 
-if env | grep -q '^HELM_VERSION=' 2>/dev/null; then
-	HELM_VERSION="$( env | grep '^HELM_VERSION=' | sed 's/^HELM_VERSION=//g' )"
-else
-	HELM_VERSION="2.12.3"
-fi
-
-if env | grep -q '^ANSIBLE_ARGS=' 2>/dev/null; then
-	ANSIBLE_ARGS="--diff $( env | grep '^ANSIBLE_ARGS=' | sed 's/^ANSIBLE_ARGS=//g' )"
-else
-	ANSIBLE_ARGS="--diff"
-fi
+HELM_VERSION="${HELM_VERSION:-2.12.3}"
+ANSIBLE_ARGS="--diff ${ANSIBLE_ARGS:-}"
 
 
-echo "${ANSIBLE_ARGS}"
+
+echo "Ansible arguments set to '${ANSIBLE_ARGS}'. Overwrite with ANSIBLE_ARGS"
+
+
 echo
 echo "----------------------------------------------------------------------------------------------------"
 echo "- [NEED TO FAIL] Helm is not installed"
