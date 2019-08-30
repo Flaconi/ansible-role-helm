@@ -14,11 +14,12 @@ This role handles the creation and updates of Helm charts.
 
 Additional variables that can be used (either as `host_vars`/`group_vars` or via command line args):
 
-| Variable                     | Description              |
-|------------------------------|--------------------------|
-| `helm_version`               | Exact locally expected Helm version (defaults to: `2.12.3`) |
-| `helm_configuration_files`   | Directory where chart configuration files is stored |
-| `helm_charts`                | List of items which represent the release. <br />Release items have the following fields: `release`,`chart`,`chart_version`,`values_file_path`,`namespace` |
+| Variable                    | Type   | Description              |
+|-----------------------------|--------|--------------------------|
+| `helm_version`              | string | Locally expected Helm version (major+minor) (defaults to: `2.12.3`) |
+| `helm_version_strict`       | bool   | If True, check against major, minor and patch, otherwise only major and minor version (defaults to: `True`) |
+| `helm_configuration_files`  | dict   | Directory where chart configuration files is stored |
+| `helm_charts`               | list   | List of items which represent the release. <br />Release items have the following fields: `release`,`chart`,`chart_version`,`values_file_path`,`namespace` |
 
 ## Example Usage
 
@@ -29,7 +30,8 @@ Additional variables that can be used (either as `host_vars`/`group_vars` or via
   roles:
     - role: rolename
       vars:
-        helm_version: 2.12.3
+        helm_version: 2.12.x
+        helm_version_strict: False
 
         # Directory with custom values for helm charts
         # Example:

@@ -1,0 +1,47 @@
+---
+
+- name: Update tiller
+  command: "helm init --upgrade"
+
+- name: Get the latest list of charts
+  command: "helm repo update"
+  check_mode: False
+
+- name: Get all Helm releases
+  command: "helm list --all --output yaml"
+  register: _get_releases_command
+  check_mode: False
+
+- name: Parse all Helm releases
+  set_fact:
+    # Resource: https://stackoverflow.com/a/39852380
+    helm_raw_releases: "{{ _get_releases_command.stdout | from_yaml }}"
+
+- name: Get array of release names
+  set_fact:
+    helm_release_names: >-
+      {%- if 'Releases' in helm_raw_releases -%}
+      {{ helm_raw_releases.Releases | map(attribute='Name') | list }}
+      {%- else -%}
+      {{ [] }}
+      {%- endif %}"
+
+- name: Install chart (if release does NOT exist yet)
+  command: |
+    helm install {{ item.chart }}
+      --version {{ item.chart_version }}
+      --namespace {{ item.namespace }}
+      --values {{ helm_configuration_files }}/{{ item.values_file_path }}
+      --name {{ item.release }}
+  with_items: "{{ helm_charts }}"
+  when: item.release not in helm_release_names
+
+- name: Update chart (if release exist already)
+  command: |
+    helm upgrade
+      --version {{ item.chart_version }}
+      --namespace {{ item.namespace }}
+      --values {{ helm_configuration_files }}/{{ item.values_file_path }}
+      {{ item.release }} {{ item.chart }}
+  with_items: "{{ helm_charts }}"
+  when: item.release in helm_release_names

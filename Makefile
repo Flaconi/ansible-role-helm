@@ -2,6 +2,8 @@
 ### Variables
 ###
 ANSIBLE_VERSION=2.5
+HELM_VERSION=2.12.3
+ANSIBLE_ARGS=
 
 
 ###
@@ -15,8 +17,10 @@ help:
 
 test:
 	docker run --rm -it \
+		-e HELM_VERSION=$(HELM_VERSION) \
+		-e ANSIBLE_ARGS=$(ANSIBLE_ARGS) \
 		-v ${PWD}:/etc/ansible/roles/rolename \
-		--workdir /etc/ansible/roles/rolename/tests \
+		-w /etc/ansible/roles/rolename/tests \
 		flaconi/ansible:${ANSIBLE_VERSION} ./support/run-tests.sh
 
 lint:

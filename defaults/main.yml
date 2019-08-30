@@ -6,6 +6,10 @@
 
 helm_version: 2.12.3
 
+# If set to true, check major, minor and patch version
+# otherwise only check against major and minor
+helm_version_strict: True
+
 # Directory with custom values for helm charts
 # Example:
 #   $ tree ./helm-config
