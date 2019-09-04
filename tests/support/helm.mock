@@ -17,6 +17,8 @@ if [ "${arguments}" = "version --client --template '{{ .Client.SemVer }}'" ] || 
   echo "v${HELM_VERSION}"
 elif [ "${arguments}" = 'init --upgrade' ]; then
   exit 0
+elif [ "${arguments}" = 'init --client-only' ]; then
+  exit 0
 elif [ "${arguments}" = 'repo update' ]; then
   exit 0
 elif [ "${arguments}" = 'list --all --output yaml' ]; then

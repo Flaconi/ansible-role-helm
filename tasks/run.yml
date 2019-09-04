@@ -1,7 +1,8 @@
 ---
 
 - name: Update tiller
-  command: "helm init --upgrade"
+  command: "helm init --client-only"
+  check_mode: False
 
 - name: Get the latest list of charts
   command: "helm repo update"
