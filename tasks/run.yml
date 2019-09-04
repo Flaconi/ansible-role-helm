@@ -25,7 +25,7 @@
       {{ helm_raw_releases.Releases | map(attribute='Name') | list }}
       {%- else -%}
       {{ [] }}
-      {%- endif %}"
+      {%- endif %}
 
 - name: Install chart (if release does NOT exist yet)
   command: |
