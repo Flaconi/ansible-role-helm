@@ -27,7 +27,7 @@
       {{ [] }}
       {%- endif %}
 
-- name: "Install chart: {{ item.chart }}"
+- name: Install chart (if release does NOT exist yet)
   command: |
     helm install {{ item.chart }}
       --version {{ item.chart_version }}
@@ -37,7 +37,7 @@
   with_items: "{{ helm_charts }}"
   when: item.release not in helm_release_names
 
-- name: "Update chart: {{ item.chart }}"
+- name: Update chart (if release exist already)
   command: |
     helm upgrade
       --version {{ item.chart_version }}
