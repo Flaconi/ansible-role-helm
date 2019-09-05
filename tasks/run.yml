@@ -1,16 +1,20 @@
 ---
 
 - name: Update tiller
-  command: "helm init --upgrade"
+  command: "helm init --client-only"
+  check_mode: False
+  changed_when: False
 
 - name: Get the latest list of charts
   command: "helm repo update"
   check_mode: False
+  changed_when: False
 
 - name: Get all Helm releases
   command: "helm list --all --output yaml"
   register: _get_releases_command
   check_mode: False
+  changed_when: False
 
 - name: Parse all Helm releases
   set_fact:
@@ -24,7 +28,7 @@
       {{ helm_raw_releases.Releases | map(attribute='Name') | list }}
       {%- else -%}
       {{ [] }}
-      {%- endif %}"
+      {%- endif %}
 
 - name: Install chart (if release does NOT exist yet)
   command: |
