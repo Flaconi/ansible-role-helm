@@ -33,7 +33,6 @@
 - name: Install chart (if release does NOT exist yet)
   command: |
     helm install {{ item.chart }}
-      --version {{ item.chart_version }}
       --namespace {{ item.namespace }}
       --values {{ helm_configuration_files }}/{{ item.values_file_path }}
       --name {{ item.release }}
