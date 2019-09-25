@@ -69,6 +69,7 @@ echo "- [NEED TO SUCC] (kubecontext) Role without charts defined"
 echo "----------------------------------------------------------------------------------------------------"
 export HELM_KUBECTL_CONTEXT=minikube
 ansible-playbook ${ANSIBLE_ARGS} ${test_directory}/test-defaults.yml -e helm_kubectl_context=${HELM_KUBECTL_CONTEXT}
+unset HELM_KUBECTL_CONTEXT
 
 echo
 echo "----------------------------------------------------------------------------------------------------"
@@ -76,6 +77,7 @@ echo "- [NEED TO SUCC] (kubecontext) Role with charts defined"
 echo "----------------------------------------------------------------------------------------------------"
 export HELM_KUBECTL_CONTEXT=minikube
 ansible-playbook ${ANSIBLE_ARGS} ${test_directory}/test-with-charts.yml -e helm_kubectl_context=${HELM_KUBECTL_CONTEXT}
+unset HELM_KUBECTL_CONTEXT
 
 
 # Clean up
