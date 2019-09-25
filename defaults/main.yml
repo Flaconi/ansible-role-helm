@@ -20,6 +20,9 @@ helm_version_strict: True
 #       └── values.yml
 helm_configuration_files: "{{ playbook_dir }}/helm-config"
 
+# If set, it will use the specified kubectl context
+helm_kubectl_context:
+
 # List of Helm charts which will be installed/updated
 helm_charts: []
 # Example

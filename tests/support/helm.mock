@@ -5,23 +5,28 @@
 
 
 HELM_VERSION="${HELM_VERSION:-2.12.3}"
+HELM_KUBECTL_CONTEXT="${HELM_KUBECTL_CONTEXT:-}"
+EXTRA_PARAMS=
 
+if [ -n "${HELM_KUBECTL_CONTEXT}" ]; then
+	EXTRA_PARAMS="--kube-context ${HELM_KUBECTL_CONTEXT} "
+fi
 
 arguments=$(printf "%s" "${*}")
 
-upgrade_prometheus_flags='upgrade --version 8.8.0 --namespace prometheus --values /etc/ansible/roles/rolename/tests/helm-config/prometheus/values.yml prometheus stable/prometheus'
-install_logstash_flags='install stable/logstash --version 8.8.0 --namespace logstash --values /etc/ansible/roles/rolename/tests/helm-config/logstash/values.yml --name logstash'
+upgrade_prometheus_flags="upgrade ${EXTRA_PARAMS}--version 8.8.0 --namespace prometheus --values /etc/ansible/roles/rolename/tests/helm-config/prometheus/values.yml prometheus stable/prometheus"
+install_logstash_flags="install stable/logstash ${EXTRA_PARAMS}--version 8.8.0 --namespace logstash --values /etc/ansible/roles/rolename/tests/helm-config/logstash/values.yml --name logstash"
 
 if [ "${arguments}" = "version --client --template '{{ .Client.SemVer }}'" ] || \
   [ "${arguments}" = "version --client --template {{ .Client.SemVer }}" ]; then
   echo "v${HELM_VERSION}"
-elif [ "${arguments}" = 'init --upgrade' ]; then
+elif [ "${arguments}" = "init ${EXTRA_PARAMS}--upgrade" ]; then
   exit 0
-elif [ "${arguments}" = 'init --client-only' ]; then
+elif [ "${arguments}" = "init ${EXTRA_PARAMS}--client-only" ]; then
   exit 0
-elif [ "${arguments}" = 'repo update' ]; then
+elif [ "${arguments} " = "repo update ${EXTRA_PARAMS}" ]; then
   exit 0
-elif [ "${arguments}" = 'list --all --output yaml' ]; then
+elif [ "${arguments}" = "list ${EXTRA_PARAMS}--all --output yaml" ]; then
   # helm list --all --output yaml
   cat << EOF
 Next: ""
