@@ -61,10 +61,10 @@
 - name: Update chart (if release exist already)
   command: |
     helm upgrade
-      --version {{ item.chart_version }}
       {% if helm_kubectl_context is defined and helm_kubectl_context %}
       --kube-context {{ helm_kubectl_context }}
       {% endif %}
+      --version {{ item.chart_version }}
       --namespace {{ item.namespace }}
       --values {{ helm_configuration_files }}/{{ item.values_file_path }}
       {{ item.release }} {{ item.chart }}
