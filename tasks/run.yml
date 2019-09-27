@@ -61,6 +61,21 @@
   with_items: "{{ helm_charts }}"
   when: item.release not in helm_release_names
   check_mode: False
+  register: _helm_install_chart
+
+- name: Show dry mode results
+  debug:
+    msg:
+      cmd: "{{ item.cmd | join(' ') }}"
+      stdout: "{{ item.stdout }}"
+      stderr: "{{ item.stderr }}"
+      return_code: "{{ item.rc }}"
+  with_items: "{{ _helm_install_chart.results }}"
+  when:
+    # Run only in --check mode
+    - ansible_check_mode
+    # Run only for items which were not skipped
+    - (item.skipped is not defined) or (not item.skipped)
 
 - name: Update chart (if release exist already)
   command: |
@@ -78,3 +93,18 @@
   with_items: "{{ helm_charts }}"
   when: item.release in helm_release_names
   check_mode: False
+  register: _helm_upgrade_chart
+
+- name: Show dry mode results
+  debug:
+    msg:
+      cmd: "{{ item.cmd | join(' ') }}"
+      stdout: "{{ item.stdout }}"
+      stderr: "{{ item.stderr }}"
+      return_code: "{{ item.rc }}"
+  with_items: "{{ _helm_upgrade_chart.results }}"
+  when:
+    # Run only in --check mode
+    - ansible_check_mode
+    # Run only for items which were not skipped
+    - (item.skipped is not defined) or (not item.skipped)
