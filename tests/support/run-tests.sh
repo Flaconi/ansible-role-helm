@@ -80,5 +80,21 @@ ansible-playbook ${ANSIBLE_ARGS} ${test_directory}/test-with-charts.yml -e helm_
 unset HELM_KUBECTL_CONTEXT
 
 
+echo
+echo "----------------------------------------------------------------------------------------------------"
+echo "- [NEED TO SUCC] (--check) Role without charts defined"
+echo "----------------------------------------------------------------------------------------------------"
+export ANSIBLE_CHECK_MODE='yes'
+ansible-playbook ${ANSIBLE_ARGS} ${test_directory}/test-defaults.yml --check
+unset ANSIBLE_CHECK_MODE
+
+echo
+echo "----------------------------------------------------------------------------------------------------"
+echo "- [NEED TO SUCC] (--check) Role with charts defined"
+echo "----------------------------------------------------------------------------------------------------"
+export ANSIBLE_CHECK_MODE='yes'
+ansible-playbook ${ANSIBLE_ARGS} ${test_directory}/test-with-charts.yml --check
+unset ANSIBLE_CHECK_MODE
+
 # Clean up
 rm -f /usr/local/bin/helm || true

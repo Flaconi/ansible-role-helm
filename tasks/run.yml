@@ -45,28 +45,13 @@
       {{ [] }}
       {%- endif %}
 
-- name: Install chart (if release does NOT exist yet)
-  command: |
-    helm install {{ item.chart }}
-      {% if helm_kubectl_context is defined and helm_kubectl_context %}
-      --kube-context {{ helm_kubectl_context }}
-      {% endif %}
-      --version {{ item.chart_version }}
-      --namespace {{ item.namespace }}
-      --values {{ helm_configuration_files }}/{{ item.values_file_path }}
-      --name {{ item.release }}
-  with_items: "{{ helm_charts }}"
-  when: item.release not in helm_release_names
+###
+### Split between normal run and dry run
+###
+- include_tasks: run-normal.yml
+  # Run without --check mode
+  when: ansible_check_mode == False
 
-- name: Update chart (if release exist already)
-  command: |
-    helm upgrade
-      {% if helm_kubectl_context is defined and helm_kubectl_context %}
-      --kube-context {{ helm_kubectl_context }}
-      {% endif %}
-      --version {{ item.chart_version }}
-      --namespace {{ item.namespace }}
-      --values {{ helm_configuration_files }}/{{ item.values_file_path }}
-      {{ item.release }} {{ item.chart }}
-  with_items: "{{ helm_charts }}"
-  when: item.release in helm_release_names
+- include_tasks: run-dry.yml
+  # Run only in --check mode
+  when: ansible_check_mode == True

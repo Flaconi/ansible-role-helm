@@ -9,7 +9,14 @@ HELM_KUBECTL_CONTEXT="${HELM_KUBECTL_CONTEXT:-}"
 EXTRA_PARAMS=
 
 if [ -n "${HELM_KUBECTL_CONTEXT}" ]; then
-	EXTRA_PARAMS="--kube-context ${HELM_KUBECTL_CONTEXT} "
+  EXTRA_PARAMS="--kube-context ${HELM_KUBECTL_CONTEXT} "
+fi
+
+ansible_check_mode="${ANSIBLE_CHECK_MODE:-no}"
+if [ "${1}" = 'install' ] || [ "${1}" = 'upgrade' ]; then
+  if [ "${ansible_check_mode}" = 'yes' ]; then
+    EXTRA_PARAMS="${EXTRA_PARAMS}--dry-run "
+  fi
 fi
 
 arguments=$(printf "%s" "${*}")
