@@ -16,12 +16,18 @@ help:
 	@printf "%s\n"   "make help             Show help"
 
 test:
+	@printf "%s\n\n" "Run modules unit tests"
+	docker run --rm -it \
+		-v ${PWD}/:/tests/ \
+		-w /tests \
+		flaconi/ansible:${ANSIBLE_VERSION} python /tests/library/test_parse_helm_repositories.py
+
+	@printf "%s\n\n" "Run integration tests"
 	docker run --rm -it \
 		-e HELM_VERSION=$(HELM_VERSION) \
 		-e ANSIBLE_ARGS=$(ANSIBLE_ARGS) \
 		-v ${PWD}:/etc/ansible/roles/rolename \
 		-w /etc/ansible/roles/rolename/tests \
 		flaconi/ansible:${ANSIBLE_VERSION} ./support/run-tests.sh
-
 lint:
 	yamllint .
