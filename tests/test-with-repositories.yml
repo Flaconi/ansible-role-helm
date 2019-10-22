@@ -5,5 +5,7 @@
     - role: rolename
       vars:
         helm_repositories:
-          - name: zalenium-github
+          - name: zalenium-github-existing
+            url: https://example.com/zalenium
+          - name: zalenium-github-missing
             url: https://example.com/zalenium
