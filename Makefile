@@ -17,11 +17,26 @@ help:
 	@printf "%s\n"   "make help             Show help"
 
 test-unit:
-	@printf "%s\n\n" "Run modules unit tests"
+	@printf "%s\n\n" "Run modules unit tests with Python 2"
 	docker run --rm -it \
 		-v ${PWD}/:/tests/ \
 		-w /tests \
 		flaconi/ansible:${ANSIBLE_VERSION} python /tests/library/test_parse_helm_repositories.py
+
+	@printf "%s\n\n" "Run modules unit tests with Python 3"
+ifeq ($(ANSIBLE_VERSION),latest)
+	docker run --rm -it \
+		-v ${PWD}/:/tests/ \
+		-w /tests \
+		--entrypoint /bin/sh \
+		python:3 -c "pip3 install -q ansible && python3 /tests/library/test_parse_helm_repositories.py"
+else
+	docker run --rm -it \
+		-v ${PWD}/:/tests/ \
+		-w /tests \
+		--entrypoint /bin/sh \
+		python:3 -c "pip3 install -q ansible==${ANSIBLE_VERSION} && python3 /tests/library/test_parse_helm_repositories.py"
+endif
 
 test-integration:
 	@printf "%s\n\n" "Run integration tests"
