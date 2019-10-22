@@ -1,0 +1,9 @@
+---
+- name: Running the test case with repositories
+  hosts: localhost
+  roles:
+    - role: rolename
+      vars:
+        helm_repositories:
+          - name: zalenium-github
+            url: https://example.com/zalenium

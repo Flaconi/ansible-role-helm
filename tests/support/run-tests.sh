@@ -96,5 +96,18 @@ export ANSIBLE_CHECK_MODE='yes'
 ansible-playbook ${ANSIBLE_ARGS} ${test_directory}/test-with-charts.yml --check
 unset ANSIBLE_CHECK_MODE
 
+
+echo
+echo "----------------------------------------------------------------------------------------------------"
+echo "- [NEED TO SUCC] Role with repositories defined"
+echo "----------------------------------------------------------------------------------------------------"
+ansible-playbook ${ANSIBLE_ARGS} ${test_directory}/test-with-repositories.yml
+
+echo
+echo "----------------------------------------------------------------------------------------------------"
+echo "- [NEED TO SUCC] (--check) Role with repositories defined"
+echo "----------------------------------------------------------------------------------------------------"
+ansible-playbook ${ANSIBLE_ARGS} ${test_directory}/test-with-repositories.yml --check
+
 # Clean up
 rm -f /usr/local/bin/helm || true
