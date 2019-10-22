@@ -23,6 +23,8 @@ helm_configuration_files: "{{ playbook_dir }}/helm-config"
 # If set, it will use the specified kubectl context
 helm_kubectl_context:
 
+helm_repositories: []
+
 # List of Helm charts which will be installed/updated
 helm_charts: []
 # Example

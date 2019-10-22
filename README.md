@@ -21,6 +21,7 @@ Additional variables that can be used (either as `host_vars`/`group_vars` or via
 | `helm_kubectl_context`      | string | If specified, use this kubectl context, otherwise it will use the currently selected default context |
 | `helm_configuration_files`  | dict   | Directory where chart configuration files is stored |
 | `helm_charts`               | list   | List of items which represent the release. <br />Release items have the following fields: `release`,`chart`,`chart_version`,`values_file_path`,`namespace` |
+| `helm_repositories`         | list   | List of items which represent the repository. <br />Repository items have the following fields: `name`,`url` |
 
 ## Example Usage
 
@@ -34,6 +35,9 @@ Additional variables that can be used (either as `host_vars`/`group_vars` or via
         helm_version: 2.12.x
         helm_version_strict: False
         helm_kubectl_context: minikube
+        helm_repositories:
+          - name: zalenium-github
+            url: https://raw.githubusercontent.com/zalando/zalenium/3.141.59u/charts/zalenium
 
         # Directory with custom values for helm charts
         # Example:

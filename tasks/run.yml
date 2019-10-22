@@ -1,6 +1,6 @@
 ---
 
-- name: Update tiller
+- name: Initialize local config
   command: |
     helm init
       {% if helm_kubectl_context is defined and helm_kubectl_context %}
@@ -9,6 +9,33 @@
       --client-only
   check_mode: False
   changed_when: False
+
+
+- name: Get Helm repositories
+  command: |
+    helm repo list
+      {% if helm_kubectl_context is defined and helm_kubectl_context %}
+      --kube-context {{ helm_kubectl_context }}
+      {% endif %}
+  register: _get_repositories_command
+  check_mode: False
+  changed_when: False
+
+- name: Parse all Helm repositories
+  parse_helm_repositories:
+    helm_output: "{{ _get_repositories_command.stdout }}"
+  register: _get_repositories
+  check_mode: False
+
+- name: Add new repositories
+  command: |
+    helm repo add
+      {% if helm_kubectl_context is defined and helm_kubectl_context %}
+      --kube-context {{ helm_kubectl_context }}
+      {% endif %}
+      {{ item.name }} {{ item.url }}
+  with_items: "{{ helm_repositories }}"
+  when: item.name in _get_repositories.repository_names
 
 - name: Get the latest list of charts
   command: |
