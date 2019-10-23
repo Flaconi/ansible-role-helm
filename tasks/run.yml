@@ -34,6 +34,7 @@
       {% endif %}
       {{ item.name }} {{ item.url }}
   with_items: "{{ helm_repositories }}"
+  check_mode: False
   when: item.name not in _get_repositories.repository_names
 
 - name: Get the latest list of charts
