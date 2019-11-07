@@ -4,6 +4,7 @@
   roles:
     - role: rolename
       vars:
+        template_test_value: "templates are rendered"
         helm_charts:
           - release: prometheus
             chart: stable/prometheus
@@ -16,3 +17,9 @@
             chart_version: 8.8.0
             values_file_path: logstash/values.yml
             namespace: logstash
+
+          - release: test-template
+            chart: stable/test-template
+            chart_version: 8.8.0
+            values_file_path: test-template/values.yml.j2
+            namespace: test-template

@@ -13,9 +13,10 @@ ANSIBLE_ARGS="--diff ${ANSIBLE_ARGS:-}"
 
 
 # Prepare fake Helm value files
-mkdir -p ${test_directory}/helm-config/{prometheus,logstash}
+mkdir -p ${test_directory}/helm-config/{prometheus,logstash,test-template}
 touch ${test_directory}/helm-config/prometheus/values.yml
 touch ${test_directory}/helm-config/logstash/values.yml
+echo '{{ template_test_value }}' > ${test_directory}/helm-config/test-template/values.yml.j2
 
 
 echo "Ansible arguments set to '${ANSIBLE_ARGS}'. Overwrite with ANSIBLE_ARGS"

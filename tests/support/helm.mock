@@ -27,6 +27,9 @@ upgrade_prometheus_flags_regex="^${upgrade_prometheus_flags_prefix}.+${upgrade_p
 install_logstash_flags_prefix="install stable/logstash ${EXTRA_PARAMS}--version 8.8.0 --namespace logstash --values *"
 install_logstash_flags_suffix=" --name logstash"
 install_logstash_flags_regex="^${install_logstash_flags_prefix}.+${install_logstash_flags_suffix}$"
+install_test_template_flags_prefix="install stable/test-template ${EXTRA_PARAMS}--version 8.8.0 --namespace test-template --values *"
+install_test_template_flags_suffix=" --name test-template"
+install_test_template_flags_regex="^${install_test_template_flags_prefix}.+${install_test_template_flags_suffix}$"
 
 if [ "${arguments}" = "version --client --template '{{ .Client.SemVer }}'" ] || \
   [ "${arguments}" = "version --client --template {{ .Client.SemVer }}" ]; then
@@ -67,6 +70,17 @@ elif [[ "${arguments}" =~ $upgrade_prometheus_flags_regex ]]; then
   exit 0
 elif [[ "${arguments}" =~ $install_logstash_flags_regex ]]; then
   exit 0
+elif [[ "${arguments}" =~ $install_test_template_flags_regex ]]; then
+  # Get the file which was generated from the template
+  file_path=$(echo "${arguments}" | sed 's/^.*--values //' | sed 's/ --name.*$//')
+  if [ 'templates are rendered' == "$(cat ${file_path})" ]; then
+    exit 0
+  else
+    echo "Template was not rendered correctly"
+    echo "File content (${file_path}): "
+    cat "${file_path}"
+    exit 1
+  fi
 else
   echo "${arguments}"
   exit 1
