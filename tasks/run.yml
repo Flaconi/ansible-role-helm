@@ -72,6 +72,22 @@
       {{ [] }}
       {%- endif %}
 
+- name: Create temporary files to store the rendered template
+  tempfile:
+    state: file
+  register: rendered_template
+  with_items: "{{ helm_charts }}"
+  check_mode: False
+  changed_when: False
+
+- template:
+    src: "{{ helm_configuration_files }}/{{ item.item.values_file_path }}"
+    dest: "{{ item.path }}"
+    mode: '0400'
+  with_items: "{{ rendered_template.results }}"
+  check_mode: False
+  changed_when: False
+
 ###
 ### Split between normal run and dry run
 ###
