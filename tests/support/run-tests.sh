@@ -12,6 +12,11 @@ HELM_VERSION="${HELM_VERSION:-2.12.3}"
 ANSIBLE_ARGS="--diff ${ANSIBLE_ARGS:-}"
 
 
+# Prepare fake Helm value files
+mkdir -p ${test_directory}/helm-config/{prometheus,logstash}
+touch ${test_directory}/helm-config/prometheus/values.yml
+touch ${test_directory}/helm-config/logstash/values.yml
+
 
 echo "Ansible arguments set to '${ANSIBLE_ARGS}'. Overwrite with ANSIBLE_ARGS"
 
@@ -108,6 +113,10 @@ echo "--------------------------------------------------------------------------
 echo "- [NEED TO SUCC] (--check) Role with repositories defined"
 echo "----------------------------------------------------------------------------------------------------"
 ansible-playbook ${ANSIBLE_ARGS} ${test_directory}/test-with-repositories.yml --check
+
+
+# Clean up fake Helm value files
+rm -r "${test_directory}/helm-config"
 
 # Clean up
 rm -f /usr/local/bin/helm || true
