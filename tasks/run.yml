@@ -93,8 +93,12 @@
 ###
 - include_tasks: run-normal.yml
   # Run without --check mode
+  vars:
+    helm_charts: "{{ rendered_template.results }}"
   when: ansible_check_mode == False
 
 - include_tasks: run-dry.yml
   # Run only in --check mode
+  vars:
+    helm_charts: "{{ rendered_template.results }}"
   when: ansible_check_mode == True
