@@ -80,7 +80,8 @@
   check_mode: False
   changed_when: False
 
-- template:
+- name: Render templates
+  template:
     src: "{{ helm_configuration_files }}/{{ item.item.values_file_path }}"
     dest: "{{ item.path }}"
     mode: '0400'
