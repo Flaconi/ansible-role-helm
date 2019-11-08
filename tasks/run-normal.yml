@@ -2,16 +2,16 @@
 
 - name: Install chart (if release does NOT exist yet)
   command: |
-    helm install {{ item.chart }}
+    helm install {{ item.item.chart }}
       {% if helm_kubectl_context is defined and helm_kubectl_context %}
       --kube-context {{ helm_kubectl_context }}
       {% endif %}
-      --version {{ item.chart_version }}
-      --namespace {{ item.namespace }}
-      --values {{ helm_configuration_files }}/{{ item.values_file_path }}
-      --name {{ item.release }}
+      --version {{ item.item.chart_version }}
+      --namespace {{ item.item.namespace }}
+      --values {{ item.path }}
+      --name {{ item.item.release }}
   with_items: "{{ helm_charts }}"
-  when: item.release not in helm_release_names
+  when: item.item.release not in helm_release_names
 
 - name: Update chart (if release exist already)
   command: |
@@ -19,9 +19,9 @@
       {% if helm_kubectl_context is defined and helm_kubectl_context %}
       --kube-context {{ helm_kubectl_context }}
       {% endif %}
-      --version {{ item.chart_version }}
-      --namespace {{ item.namespace }}
-      --values {{ helm_configuration_files }}/{{ item.values_file_path }}
-      {{ item.release }} {{ item.chart }}
+      --version {{ item.item.chart_version }}
+      --namespace {{ item.item.namespace }}
+      --values {{ item.path }}
+      {{ item.item.release }} {{ item.item.chart }}
   with_items: "{{ helm_charts }}"
-  when: item.release in helm_release_names
+  when: item.item.release in helm_release_names

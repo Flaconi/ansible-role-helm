@@ -23,6 +23,9 @@ Additional variables that can be used (either as `host_vars`/`group_vars` or via
 | `helm_charts`               | list   | List of items which represent the release. <br />Release items have the following fields: `release`,`chart`,`chart_version`,`values_file_path`,`namespace` |
 | `helm_repositories`         | list   | List of items which represent the repository. <br />Repository items have the following fields: `name`,`url` |
 
+> ** NOTE **
+> <br />The `values_file_path` property of the items stored in `helm_charts` is treated as a Jinja2 template
+
 ## Example Usage
 
 ```yml
@@ -44,21 +47,21 @@ Additional variables that can be used (either as `host_vars`/`group_vars` or via
         #   $ tree ./helm-config
         #   ./helm-config
         #   ├── prometheus
-        #   │   └── values.yml
+        #   │   └── values.yml.j2
         #   └── logstash
-        #       └── values.yml
+        #       └── values.yml.j2
         helm_configuration_files: "{{ playbook_dir }}/helm-config"
         helm_charts:
           - release: prometheus
             chart: stable/prometheus
             chart_version: 8.8.0
-            values_file_path: prometheus/values.yml
+            values_file_path: prometheus/values.yml.j2
             namespace: prometheus
 
           - release: logstash
             chart: stable/logstash
             chart_version: 8.8.0
-            values_file_path: logstash/values.yml
+            values_file_path: logstash/values.yml.j2
             namespace: logstash
 ```
 
