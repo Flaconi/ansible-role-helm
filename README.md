@@ -16,7 +16,7 @@ Additional variables that can be used (either as `host_vars`/`group_vars` or via
 
 | Variable                    | Type   | Description              |
 |-----------------------------|--------|--------------------------|
-| `helm_version`              | string | Locally expected Helm version (major+minor) (defaults to: `2.12.3`) |
+| `helm_version`              | string | Locally expected Helm version (major+minor) (defaults to: `3.1.2`) |
 | `helm_version_strict`       | bool   | If True, check against major, minor and patch, otherwise only major and minor version (defaults to: `True`) |
 | `helm_kubectl_context`      | string | If specified, use this kubectl context, otherwise it will use the currently selected default context |
 | `helm_configuration_files`  | dict   | Directory where chart configuration files is stored |

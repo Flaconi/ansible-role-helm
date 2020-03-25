@@ -2,7 +2,7 @@
 ### Variables
 ###
 ANSIBLE_VERSION=2.5
-HELM_VERSION=2.12.3
+HELM_VERSION=3.1.2
 ANSIBLE_ARGS=
 
 .PHONY: help test test-unit test-integration lint
