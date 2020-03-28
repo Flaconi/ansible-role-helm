@@ -1,7 +1,7 @@
 ---
 
 - name: Set installed Helm version
-  shell: "helm version --client --template '{{ '{{' }} .Client.SemVer {{ '}}' }}' | grep -Eo '^v[0-9]+\\.[0-9]+'"
+  shell: "helm version | grep -Eo 'v[0-9]+\\.[0-9]+'"
   register: _helm_local_version
   changed_when: False
   ignore_errors: True

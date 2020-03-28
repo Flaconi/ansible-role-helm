@@ -2,7 +2,7 @@
 
 - name: Install chart (if release does NOT exist yet)
   command: |
-    helm install {{ item.item.chart }}
+    helm install {{ item.item.chart }} 
       {% if helm_kubectl_context is defined and helm_kubectl_context %}
       --kube-context {{ helm_kubectl_context }}
       {% endif %}
@@ -10,7 +10,7 @@
       --version {{ item.item.chart_version }}
       --namespace {{ item.item.namespace }}
       --values {{ item.path }}
-      --name {{ item.item.release }}
+      --name-template {{ item.item.release }}
   with_items: "{{ helm_charts }}"
   when: item.item.release not in helm_release_names
   register: _helm_install_chart

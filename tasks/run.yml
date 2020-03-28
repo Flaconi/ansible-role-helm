@@ -1,15 +1,5 @@
 ---
 
-- name: Initialize local config
-  command: |
-    helm init
-      {% if helm_kubectl_context is defined and helm_kubectl_context %}
-      --kube-context {{ helm_kubectl_context }}
-      {% endif %}
-      --client-only
-  check_mode: False
-  changed_when: False
-
 - name: Get Helm repositories
   command: |
     helm repo list
@@ -48,7 +38,7 @@
 
 - name: Get all Helm releases
   command: |
-    helm list
+    helm list --all-namespaces
       {% if helm_kubectl_context is defined and helm_kubectl_context %}
       --kube-context {{ helm_kubectl_context }}
       {% endif %}
@@ -66,8 +56,8 @@
 - name: Get array of release names
   set_fact:
     helm_release_names: >-
-      {%- if 'Releases' in helm_raw_releases -%}
-      {{ helm_raw_releases.Releases | map(attribute='Name') | list }}
+      {%- if helm_raw_releases is defined and helm_raw_releases|length -%}
+      {{ helm_raw_releases | map(attribute='name') | list }}
       {%- else -%}
       {{ [] }}
       {%- endif %}
