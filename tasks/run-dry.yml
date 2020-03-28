@@ -2,7 +2,7 @@
 
 - name: Install chart (if release does NOT exist yet)
   command: |
-    helm install {{ item.item.chart }}
+    helm install {{ item.item.chart }} 
       {% if helm_kubectl_context is defined and helm_kubectl_context %}
       --kube-context {{ helm_kubectl_context }}
       {% endif %}
