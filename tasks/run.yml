@@ -38,11 +38,11 @@
 
 - name: Get all Helm releases
   command: |
-    helm list --all-namespaces
+    helm list
       {% if helm_kubectl_context is defined and helm_kubectl_context %}
       --kube-context {{ helm_kubectl_context }}
       {% endif %}
-      --all
+      --all-namespaces
       --output yaml
   register: _get_releases_command
   check_mode: False
