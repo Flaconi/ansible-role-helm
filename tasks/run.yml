@@ -56,8 +56,8 @@
 - name: Get array of release names
   set_fact:
     helm_release_names: >-
-      {%- if 'Releases' in helm_raw_releases -%}
-      {{ helm_raw_releases.Releases | map(attribute='Name') | list }}
+      {%- if helm_raw_releases is defined and helm_raw_releases|length -%}
+      {{ helm_raw_releases | map(attribute='name') | list }}
       {%- else -%}
       {{ [] }}
       {%- endif %}
