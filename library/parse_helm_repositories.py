@@ -15,6 +15,7 @@ def parse_helm_repositories_output(text):
     reg = re.compile(r"^(?P<name>[^\s\t]+)[\s\t]+(?P<url>[^\s\n]+)$")
 
     # Loop through all the lines with the following format:
+    # stable             	https://kubernetes-charts.storage.googleapis.com
     # local              	http://127.0.0.1:8879/charts
     for line in lines:
         match = reg.match(line)
