@@ -44,6 +44,7 @@ elif [ "${arguments}" = "repo add ${EXTRA_PARAMS}stable https://kubernetes-chart
 elif [ "${arguments} " = "repo list ${EXTRA_PARAMS}" ]; then
   cat << EOF
 NAME                        	URL
+stable                        https://kubernetes-charts.storage.googleapis.com
 local                       	http://127.0.0.1:8879/charts
 reactiveops-stable          	https://charts.reactiveops.com/stable
 flaconi-common-helm         	s3://flaconi-helm-charts
