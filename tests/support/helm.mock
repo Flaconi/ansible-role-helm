@@ -39,10 +39,12 @@ elif [ "${arguments}" = "repo add ${EXTRA_PARAMS}zalenium-github-existing https:
   exit 1
 elif [ "${arguments}" = "repo add ${EXTRA_PARAMS}zalenium-github-missing https://example.com/zalenium" ]; then
   exit 0
+elif [ "${arguments}" = "repo add ${EXTRA_PARAMS}stable https://kubernetes-charts.storage.googleapis.com" ]; then
+  exit 0
 elif [ "${arguments} " = "repo list ${EXTRA_PARAMS}" ]; then
   cat << EOF
 NAME                        	URL
-stable                      	https://kubernetes-charts.storage.googleapis.com
+stable                        https://kubernetes-charts.storage.googleapis.com
 local                       	http://127.0.0.1:8879/charts
 reactiveops-stable          	https://charts.reactiveops.com/stable
 flaconi-common-helm         	s3://flaconi-helm-charts
