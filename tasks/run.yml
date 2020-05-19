@@ -76,7 +76,7 @@
 
 - include_tasks: gather_facts_vpc.yml
 
-- include_tasks: gather_sg_facts.yml
+- include_tasks: gather_facts_security_groups.yml
 
 - name: Create temporary files to store the rendered template
   tempfile:
