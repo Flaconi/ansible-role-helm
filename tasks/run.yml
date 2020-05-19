@@ -70,6 +70,14 @@
       {{ [] }}
       {%- endif %}
 
+- set_fact:
+    helm_vpc_id: []
+    helm_ec2_security_groups: []
+
+- include_tasks: gather_facts_vpc.yml
+
+- include_tasks: gather_sg_facts.yml
+
 - name: Create temporary files to store the rendered template
   tempfile:
     state: file
