@@ -22,6 +22,8 @@ Additional variables that can be used (either as `host_vars`/`group_vars` or via
 | `helm_configuration_files`  | dict   | Directory where chart configuration files is stored |
 | `helm_charts`               | list   | List of items which represent the release. <br />Release items have the following fields: `release`,`chart`,`chart_version`,`values_file_path`,`namespace` |
 | `helm_repositories`         | list   | List of items which represent the repository. <br />Repository items have the following fields: `name`,`url` |
+| `cluster_env`               | string | Default cluster environment(defaults to playground) |
+| `helm_default_region`       | string | Default region value used to gather vpc facts |
 
 > ** NOTE **
 > <br />The `values_file_path` property of the items stored in `helm_charts` is treated as a Jinja2 template
