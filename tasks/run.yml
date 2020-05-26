@@ -94,7 +94,8 @@
 
 - name: Render Helm Charts with SG
   set_fact:
-    helm_charts_updated: "{{ _charts_place_holder_result | json_query('results[*].ansible_facts.charts_place_holder') }}"
+    helm_charts_updated: "{{ _charts_place_holder_result |
+    json_query('results[*].ansible_facts.charts_place_holder') }}"
 
 
 - name: Create temporary files to store the rendered template

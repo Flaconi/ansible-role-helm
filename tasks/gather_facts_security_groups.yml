@@ -21,8 +21,8 @@
 
 - name: Return EC2 Security Groups IDs
   set_fact:
-     helm_ec2_security_groups: "{{ helm_ec2_security_groups |
-     combine( {item.item['tag:Helm_Chart']: {'Name': item.item['tag:Helm_Chart'], 'Groups': item |
-     json_query('security_groups[*].group_id') }})  }}"
+    helm_ec2_security_groups: "{{ helm_ec2_security_groups |
+    combine( {item.item['tag:Helm_Chart']: {'Name': item.item['tag:Helm_Chart'], 'Groups': item |
+    json_query('security_groups[*].group_id') }})  }}"
   with_items: "{{ _ec2_group_info.results }}"
   when: item.security_groups | length > 0
