@@ -6,8 +6,8 @@
       - key: state
         val: available
       - key: "tag:Name"
-        val: "{{ cluster_env }}-kubernetes-{{ cluster_name }}.k8s.local"
-      - key: "tag:kubernetes.io/cluster/{{ cluster_env }}-kubernetes-{{ cluster_name }}.k8s.local"
+        val: "{{ cluster_env }}-kubernetes-{{ inventory_hostname }}.k8s.local"
+      - key: "tag:kubernetes.io/cluster/{{ cluster_env }}-kubernetes-{{ inventory_hostname }}.k8s.local"
         val: shared
 
 - name: "Gather vpc facts"
