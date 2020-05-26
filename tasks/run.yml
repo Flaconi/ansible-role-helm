@@ -80,7 +80,8 @@
 
 - name: Assign Security Groups to Charts
   set_fact:
-    helm_charts_updated: "{{ helm_charts_updated | combine( {'security_groups': helm_ec2_security_groups[chart].Groups }) }}"
+    helm_charts_updated: "{{ helm_charts_updated |
+    combine( {'security_groups': helm_ec2_security_groups[chart].Groups }) }}"
   with_items: "{{ helm_charts }}"
   vars:
     chart: "{{ item.release }}"
