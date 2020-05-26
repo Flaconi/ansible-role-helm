@@ -16,7 +16,7 @@
     aws_secret_key: "{{ lookup('ENV', 'AWS_SECRET_KEY') | default(omit)  }}"
     security_token: "{{ lookup('ENV', 'AWS_SECURITY_TOKEN') | default(omit) }}"
     profile: "{{ helm_profile | default(omit) }}"
-    region: "{{ cluster_region }}"
+    region: "{{ helm_default_region }}"
     filters: "{{ helm_vpc_filters | get_attr('key', 'val') }}"
   register: _helm_vpc_facts
 

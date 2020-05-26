@@ -37,3 +37,6 @@ helm_charts: []
 
 #Set env default to playground
 cluster_env: playground
+
+#Set Default Region
+helm_default_region: eu-central-1
