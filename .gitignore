@@ -1,0 +1,5 @@
+#Ignore all hidden files and any file starting with a dot
+.*
+*.pyc
+#Ignore .gitignore as well
+!/.gitignore
