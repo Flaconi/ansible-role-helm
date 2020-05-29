@@ -105,7 +105,8 @@
   tempfile:
     state: file
   register: rendered_template
-  with_items: "{% if inventory_hostname == 'localhost' %}{{ helm_charts }}{% else %}{{ helm_charts_updated }}{% endif %}"
+  with_items: "{% if inventory_hostname == 'localhost' %}{{ helm_charts }}
+  {% else %}{{ helm_charts_updated }}{% endif %}"
   check_mode: False
   changed_when: False
 
