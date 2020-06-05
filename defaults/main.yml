@@ -34,3 +34,9 @@ helm_charts: []
 #       chart_version: 8.8.0
 #       values_file_path: prometheus/values.yml
 #       namespace: monitoring-prometheus
+
+#Set env default to playground
+cluster_env: playground
+
+#Set Default Region
+helm_default_region: eu-central-1

@@ -1,0 +1,28 @@
+---
+
+- set_fact:
+    ec2_security_groups_filters: []
+
+- name: "Set EC2 Security Groups filter"
+  set_fact:
+    ec2_security_groups_filters: "{{ ec2_security_groups_filters | default([]) + [{ 'vpc-id': helm_vpc_id,
+    'tag:Helm_Chart': item.release }] }}"
+  with_items: "{{ helm_charts }}"
+
+- name: "EC2 Security Groups facts"
+  ec2_group_facts:
+    aws_access_key: "{{ lookup('ENV', 'AWS_ACCESS_KEY') | default(omit) }}"
+    aws_secret_key: "{{ lookup('ENV', 'AWS_SECRET_KEY') | default(omit)  }}"
+    security_token: "{{ lookup('ENV', 'AWS_SECURITY_TOKEN') | default(omit) }}"
+    region: "{{ cluster_region }}"
+    filters: "{{ item }}"
+  with_items: "{{ ec2_security_groups_filters }}"
+  register: _ec2_group_info
+
+- name: Return EC2 Security Groups IDs
+  set_fact:
+    helm_ec2_security_groups: "{{ helm_ec2_security_groups |
+    combine( {item.item['tag:Helm_Chart']: {'Name': item.item['tag:Helm_Chart'], 'Groups': item |
+    json_query('security_groups[*].group_id') }})  }}"
+  with_items: "{{ _ec2_group_info.results }}"
+  when: item.security_groups | length > 0

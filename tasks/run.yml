@@ -70,11 +70,43 @@
       {{ [] }}
       {%- endif %}
 
+- set_fact:
+    helm_vpc_id: []
+    helm_ec2_security_groups: []
+    helm_charts_updated: []
+
+- include_tasks: gather_facts_vpc.yml
+  when: inventory_hostname != "localhost"
+- include_tasks: gather_facts_security_groups.yml
+  when: inventory_hostname != "localhost"
+
+- name: Assign Security Groups to Charts
+  set_fact:
+    charts_place_holder:
+      release: "{{ chart }}"
+      chart: "{{ item.chart }}"
+      chart_version: "{{ item.chart_version }}"
+      values_file_path: "{{ item.values_file_path }}"
+      namespace: "{{ item.namespace }}"
+      security_groups: "{{ helm_ec2_security_groups[chart].Groups | default([]) }}"
+  with_items: "{{ helm_charts }}"
+  vars:
+    chart: "{{ item.release }}"
+  when: inventory_hostname != "localhost"
+  register: _charts_place_holder_result
+
+- name: Render Helm Charts with SG
+  set_fact:
+    helm_charts_updated: "{{ _charts_place_holder_result |
+    json_query('results[*].ansible_facts.charts_place_holder') }}"
+  when: inventory_hostname != "localhost"
+
 - name: Create temporary files to store the rendered template
   tempfile:
     state: file
   register: rendered_template
-  with_items: "{{ helm_charts }}"
+  with_items: "{% if inventory_hostname == 'localhost' %}{{ helm_charts }}
+  {% else %}{{ helm_charts_updated }}{% endif %}"
   check_mode: False
   changed_when: False
 
