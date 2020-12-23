@@ -6,7 +6,7 @@
       {% if helm_kubectl_context is defined and helm_kubectl_context %}
       --kube-context {{ helm_kubectl_context }}
       {% endif %}
-      stable https://kubernetes-charts.storage.googleapis.com
+      elastic https://helm.elastic.co
   check_mode: False
 - name: Get Helm repositories
   command: |
