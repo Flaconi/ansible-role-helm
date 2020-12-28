@@ -9,7 +9,7 @@ class parse(unittest.TestCase):
     def test_parse_helm_repositories_output(self):
         helm_repositories_output = """
 NAME               	URL
-stable             	https://kubernetes-charts.storage.googleapis.com
+stable             	https://charts.helm.sh/stable
 local              	http://127.0.0.1:8879/charts
 reactiveops-stable 	https://charts.reactiveops.com/stable
 flaconi-common-helm	s3://flaconi-helm-charts
@@ -19,7 +19,7 @@ zalenium-github    	https://raw.githubusercontent.com/zalando/zalenium/3.141.59u
         expected_helm_repositories = [
             {
                 "name": "stable",
-                "url": "https://kubernetes-charts.storage.googleapis.com",
+                "url": "https://charts.helm.sh/stable",
             },
             {
                 "name": "local",
@@ -45,7 +45,7 @@ zalenium-github    	https://raw.githubusercontent.com/zalando/zalenium/3.141.59u
     def test_parse_helm_repositories_output_malformed(self):
         helm_repositories_output = """
 NAME               	VERSION URL
-stable             	1       https://kubernetes-charts.storage.googleapis.com
+stable             	1       https://charts.helm.sh/stable
 local              	1       http://127.0.0.1:8879/charts
 reactiveops-stable 	1       https://charts.reactiveops.com/stable
 flaconi-common-helm	1       s3://flaconi-helm-charts
