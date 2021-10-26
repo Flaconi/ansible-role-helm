@@ -7,7 +7,7 @@ This role handles the creation and updates of Helm charts.
 
 ## Requirements
 
-* Ansible 2.5
+* Ansible 2.6
 
 
 ## Additional variables
@@ -84,5 +84,5 @@ make lint
 make test
 
 # Run integration tests with custom Ansible version
-make test ANSIBLE_VERSION=2.5
+make test ANSIBLE_VERSION=2.6
 ```
