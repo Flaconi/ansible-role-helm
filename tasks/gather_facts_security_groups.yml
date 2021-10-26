@@ -11,9 +11,9 @@
 
 - name: "EC2 Security Groups facts"
   ec2_group_facts:
-    aws_access_key: "{{ lookup('ENV', 'AWS_ACCESS_KEY') | default(omit) }}"
-    aws_secret_key: "{{ lookup('ENV', 'AWS_SECRET_KEY') | default(omit)  }}"
-    security_token: "{{ lookup('ENV', 'AWS_SECURITY_TOKEN') | default(omit) }}"
+    aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY') | default(omit) }}"
+    aws_secret_key: "{{ lookup('env', 'AWS_SECRET_KEY') | default(omit)  }}"
+    security_token: "{{ lookup('env', 'AWS_SECURITY_TOKEN') | default(omit) }}"
     region: "{{ cluster_region }}"
     filters: "{{ item }}"
   with_items: "{{ ec2_security_groups_filters }}"
