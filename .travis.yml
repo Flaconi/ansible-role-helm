@@ -9,7 +9,7 @@ services:
 
 env:
   global:
-    - ANSIBLE_VERSION=2.5
+    - ANSIBLE_VERSION=2.9
 
 
 jobs:
@@ -27,16 +27,16 @@ jobs:
     ### Stage 2: Run Ansible
     ###
 
-    # Job 1: Ansible 2.5
+    # Job 1: Ansible 2.9
     - stage: test ansible
       install:
         - max=100; i=0; while [ $i -lt $max ]; do if sudo apt-get update; then break; else i=$((i+1)); fi done
         - max=100; i=0; while [ $i -lt $max ]; do if sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce; then break; else i=$((i+1)); fi done
       env:
-        - ANSIBLE_VERSION=2.5
+        - ANSIBLE_VERSION=2.9
       script:
-        - make test ANSIBLE_VERSION=${ANSIBLE_VERSION} HELM_VERSION=3.1.2 ANSIBLE_ARGS="'-e helm_version_strict=yes -e helm_version=3.1.2'"
-        - make test ANSIBLE_VERSION=${ANSIBLE_VERSION} HELM_VERSION=3.1.2 ANSIBLE_ARGS="'-e helm_version_strict=no  -e helm_version=3.1.2'"
+        - make test ANSIBLE_VERSION=${ANSIBLE_VERSION} HELM_VERSION=3.4.2 ANSIBLE_ARGS="'-e helm_version_strict=yes -e helm_version=3.4.2'"
+        - make test ANSIBLE_VERSION=${ANSIBLE_VERSION} HELM_VERSION=3.4.2 ANSIBLE_ARGS="'-e helm_version_strict=no  -e helm_version=3.4.2'"
 
     # Job 1: Ansible latest
     - stage: test ansible
@@ -46,5 +46,5 @@ jobs:
       env:
         - ANSIBLE_VERSION=latest
       script:
-        - make test ANSIBLE_VERSION=${ANSIBLE_VERSION} HELM_VERSION=3.1.2 ANSIBLE_ARGS="'-e helm_version_strict=yes -e helm_version=3.1.2'"
-        - make test ANSIBLE_VERSION=${ANSIBLE_VERSION} HELM_VERSION=3.1.2 ANSIBLE_ARGS="'-e helm_version_strict=no  -e helm_version=3.1.2'"
+        - make test ANSIBLE_VERSION=${ANSIBLE_VERSION} HELM_VERSION=3.4.2 ANSIBLE_ARGS="'-e helm_version_strict=yes -e helm_version=3.4.2'"
+        - make test ANSIBLE_VERSION=${ANSIBLE_VERSION} HELM_VERSION=3.4.2 ANSIBLE_ARGS="'-e helm_version_strict=no  -e helm_version=3.4.2'"

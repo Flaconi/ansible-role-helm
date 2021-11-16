@@ -8,7 +8,7 @@ script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 test_directory="${script_directory}/.."
 
 
-HELM_VERSION="${HELM_VERSION:-3.1.2}"
+HELM_VERSION="${HELM_VERSION:-3.4.2}"
 ANSIBLE_ARGS="--diff ${ANSIBLE_ARGS:-}"
 
 

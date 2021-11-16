@@ -6,7 +6,7 @@ galaxy_info:
   author: Michał Czeraszkiewicz
   license: Apache 2.0
   description: Installs and updates Helm charts
-  min_ansible_version: 2.5
+  min_ansible_version: 2.6
   platforms:
     - name: all
       versions:
