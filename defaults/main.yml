@@ -4,7 +4,7 @@
 ### Sane defaults
 ###
 
-helm_version: 3.1.2
+helm_version: 3.4.2
 
 # If set to true, check major, minor and patch version
 # otherwise only check against major and minor

@@ -4,7 +4,7 @@
 # If certain commands were called exit with successful code
 
 
-HELM_VERSION="${HELM_VERSION:-3.1.2}"
+HELM_VERSION="${HELM_VERSION:-3.4.2}"
 HELM_KUBECTL_CONTEXT="${HELM_KUBECTL_CONTEXT:-}"
 EXTRA_PARAMS=
 
